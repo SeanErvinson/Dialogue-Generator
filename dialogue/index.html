@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Dialogue</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb"
+        crossorigin="anonymous">
+</head>
+
+<body>
+    <nav class="navbar navbar-light bg-light">
+        <span class="navbar-brand mb-0 h1">Navbar</span>
+    </nav>
+
+    <div>
+        <form action="">
+            <div class="form-group">
+                <label for="title">Scene Number</label>
+                <input type="text" class="form-control" id="title">
+            </div>
+            <button type="button" id="add-interactable" class="btn btn-success">Add New Interactable</button>
+        </form>
+    </div>
+
+    <div id="interactables"></div>
+
+    <button class="btn btn-primary" id="generate-json">Generate JSON</button>
+    <textarea class= "form-control" id ="generated-json-text" rows="4" readonly ></textarea>
+    <script src="scriptSample.js"></script>
+</body>
+
+</html>
