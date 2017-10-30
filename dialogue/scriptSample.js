@@ -108,7 +108,7 @@ document.addEventListener("DOMContentLoaded", function () {
         var formGroup = document.createElement("div");
         var messageContainer = document.createElement("div");
         // Header
-        var messageHeader = addHeader(label);
+        var messageHeader = addHeader(label, "h2");
         // Normal
         var normalDialogueGroup = genericDialogueForm("normalDialogueGroup", "Normal", "normalFormName", "normalMsg", "normalButtonGroup", "normalMsgClass");
         // Repeat Toggle
@@ -160,7 +160,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         function choiceDialogueGroup() { 
             var formGroup = document.createElement("div");
-            var choiceHeader = addHeader("Choice");
+            var choiceHeader = addHeader("Choice", "h2");
             var choiceDialogueForm = choiceDialogueInput("choiceOneInputId", "Choice" + (choiceId + 1), "choiceOneInputClass", "choiceDialogue" + choiceId, "Choice" + (choiceId + 1), "choiceDialogueName", "choiceDialogue", "choiceDialogueButton", "choiceDialogueOneClass");
             formGroup.className = "choiceDialogueFormClass";
             var choiceDialogueForm2 = choiceDialogueInput("choiceTwoInputId", "Choice" + (choiceId + 1), "choiceTwoInputClass", "choiceDialogue"+choiceId, "Choice" + (choiceId + 1), "choiceDialogueName", "choiceDialogue", "choiceDialogueButton", "choiceDialogueTwoClass");
@@ -188,7 +188,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         function genericDialogueForm(id, subHeaderLabel, dialogueFormName, dialogueId, buttonGroupId, className) {
             var genericFormGroup = document.createElement('div');
-            var genericHeader = addSubHeader(subHeaderLabel);
+            var genericHeader = addHeader(subHeaderLabel, "h5");
             var genericDialogue = dialogueForm(dialogueFormName, dialogueId, className);
             var genericdButtonGroup = buttonForm(buttonGroupId, dialogueFormName, dialogueId, className);
             genericFormGroup.id = id + i;
@@ -217,25 +217,20 @@ document.addEventListener("DOMContentLoaded", function () {
                 addButton.addEventListener("click", function () {
                     if (id == "repeatdButtonGroup") {
                         repeatId++;
-                        cloneDialogue = dialogueForm(formId, dialogueId, className);
-                        genericFormGroup.appendChild(cloneDialogue);
                     }
                     else if (id == "normalButtonGroup") {
                         normalId++;
-                        cloneDialogue = dialogueForm(formId, dialogueId, className);
-                        genericFormGroup.appendChild(cloneDialogue);
                     }
                     else {
                         choiceId++;
-                        console.log(choiceId)
-                        var choiceDialogue = dialogueForm(formId, dialogueId, className);
-                        genericFormGroup.appendChild(choiceDialogue);
                     }
+                    cloneDialogue = dialogueForm(formId, dialogueId, className);
+                    genericFormGroup.appendChild(cloneDialogue);
                 });
                 removeButton.textContent = "Remove";
                 removeButton.className = "btn-danger";
                 removeButton.addEventListener("click", function () {
-                    if (repeatId > 0 || normalId > 0 || choiceId > 0) { 
+                    if (repeatId != 0 || normalId != 0) { 
                         if (id == "repeatdButtonGroup") {
                             var element = genericFormGroup.querySelector('#repeatFormName' + repeatId);
                             repeatId--;
@@ -246,7 +241,11 @@ document.addEventListener("DOMContentLoaded", function () {
                             normalId--;
                             genericFormGroup.removeChild(element);
                         }
-                        else {
+                    }    
+                    // Remove Choice needs a bit more work
+                    if (choiceId != 0) {
+                        if (id == "choiceDialogueButton")
+                        {    
                             var element = genericFormGroup.querySelector('#choiceDialogueName' + choiceId);
                             choiceId--;
                             genericFormGroup.removeChild(element);
@@ -294,7 +293,6 @@ document.addEventListener("DOMContentLoaded", function () {
             
             return formGroup;
         }
-          
         formGroup.appendChild(messageHeader);
         formGroup.appendChild(messageContainer);
         formGroup.appendChild(toggleRepeat);
@@ -309,12 +307,14 @@ document.addEventListener("DOMContentLoaded", function () {
         var nameLabel = document.createElement("label");
         var nameInput = document.createElement("input");
 
-        formGroup.className = "row mb-0";
         nameInput.id = id + i;
         nameLabel.textContent = label;
         nameLabel.setAttribute("for", id + i);
+
         nameInput.className = className;
+        formGroup.className = "row mb-0";
         nameLabel.className = "col-sm-0";
+
         formGroup.appendChild(nameLabel);
         formGroup.appendChild(nameInput);
         return formGroup;
@@ -324,13 +324,13 @@ document.addEventListener("DOMContentLoaded", function () {
         var formGroup = document.createElement("div");
         var typeLabel = document.createElement("label");
         var typeInput = document.createElement("select");
-        var npcOption = document.createElement("option");
-        var objOption = document.createElement("option");
+        var OptionOne = document.createElement("option");
+        var OptionTwo = document.createElement("option");
 
-        npcOption.text = "NPC";
-        objOption.text = "Object";
-        typeInput.add(npcOption);
-        typeInput.add(objOption);
+        OptionOne.text = "NPC";
+        OptionTwo.text = "Object";
+        typeInput.add(OptionOne);
+        typeInput.add(OptionTwo);
         typeInput.className = className;
         typeInput.id = id + i;
         typeLabel.textContent = label;
@@ -356,16 +356,10 @@ document.addEventListener("DOMContentLoaded", function () {
         return formGroup;
     }
 
-    function addHeader(label) {
-        var heading = document.createElement("h2");
+    function addHeader(label, size) {
+        var heading = document.createElement(size);
         heading.textContent = label;
         return heading;
-    }
-    
-    function addSubHeader(label) {
-        var subHeader = document.createElement("h5");
-        subHeader.textContent = label;
-        return subHeader;
     }
 
     var generateJSONButton = document.getElementById("generate-json");
@@ -394,16 +388,7 @@ document.addEventListener("DOMContentLoaded", function () {
             container.querySelectorAll(".choiceDialogueTwoClass").forEach(function (item, count) {
                 choiceTwoMsg[count] = item.value;
             });
-            // var c2dialog = container.querySelector("#decisionTwoInput" + index).value;
-            // var linkOneMsg = new Array();
-            // var linkTwoMsg = new Array();
-            // container.querySelectorAll(".decisionOneFormName").forEach(function (item, index) {
-            //     linkOneMsg[index] = item.querySelector("#decisionOneMsg" + index).value;
-            // });
-            // container.querySelectorAll(".decisionTwoFormName").forEach(function (item, index) {
-            //     linkTwoMsg[index] = item.querySelector("#decisionTwoMsg" + index).value;
-            // });
-            
+
             interactable.interactable[index]["id"] = idValue;
             interactable.interactable[index]["name"] = nameValue;
             interactable.interactable[index]["type"] = typeValue;
@@ -414,7 +399,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 messageObject["repeat"] = repeatMsg;
             }    
             
-         
             checkToggle = container.querySelector(".toggleChoiceClass");
             if (checkToggle.checked) { 
                 interactable.interactable[index]["choice"] = [
@@ -423,7 +407,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 interactable.interactable[index]["linkIdMessage"] = [
                     { "content": choiceOneMsg },
                     { "content": choiceTwoMsg }];
-                
             }    
         });
         generateJson();
