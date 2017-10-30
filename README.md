@@ -31,7 +31,7 @@ Just open the index.html
 
 ## Versioning
 
-Version 0.1.0
+Version 0.1.0.alpha1
 
 ## Authors
 
