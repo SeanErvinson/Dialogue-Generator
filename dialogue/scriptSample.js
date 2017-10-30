@@ -1,8 +1,12 @@
 document.addEventListener("DOMContentLoaded", function () {
+    // Reference to the Add New Interactable Button
     var addInteractable = document.getElementById("add-interactable");
+    // Reference to the Div
     var interactables = document.getElementById("interactables");
+    // Number of Interactables
     var i = 0;
     
+    // Json Object
     var interactable = {
         "interactable": []
     };
@@ -12,6 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
         addNewGroup();
     });
 
+    // Main Dialogue Group; The whole template form 
     function addNewGroup() {
         var container = document.createElement("div");
         var informationGroup = basicForm();
@@ -119,7 +124,7 @@ document.addEventListener("DOMContentLoaded", function () {
         var toggleChoice = addToggle("toggleChoice", "Has Choice", "toggleChoiceClass");
         // Choice
         var choiceDialogueGroup = choiceDialogueGroup();
-
+        
         messageContainer.className = "row";
         messageContainer.appendChild(normalDialogueGroup);
         messageContainer.appendChild(repeatDialogueGroup);
@@ -184,8 +189,11 @@ document.addEventListener("DOMContentLoaded", function () {
             return formGroup;
         }
         
-        /// NOT YET FINAL
-
+        // Generic Dialogue Form
+        // This contains
+        // Header
+        // Dialogue Box
+        // Button (Add and Remove)
         function genericDialogueForm(id, subHeaderLabel, dialogueFormName, dialogueId, buttonGroupId, className) {
             var genericFormGroup = document.createElement('div');
             var genericHeader = addHeader(subHeaderLabel, "h5");
@@ -213,7 +221,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 formGroup.id = id + i;
                 addButton.textContent = "Add";
                 addButton.className = "btn-success";
-                /// Needs to be improved
                 addButton.addEventListener("click", function () {
                     if (id == "repeatdButtonGroup") {
                         repeatId++;
@@ -260,39 +267,41 @@ document.addEventListener("DOMContentLoaded", function () {
                 return formGroup;
             }
 
+            function dialogueForm(formId, id, className) {
+                var formGroup = document.createElement("div");
+                var messageInput = document.createElement("textarea");
+                messageInput.rows = 3;
+                messageInput.cols = 40;
+                messageInput.className = className;
+                if (formId == "normalFormName")
+                {
+                    messageInput.id = id + normalId;
+                    formGroup.id = formId + normalId;
+                }    
+                else if (formId == "repeatFormName")
+                {
+                    messageInput.id = id + repeatId;
+                    formGroup.id = formId + repeatId;
+                }   
+                else
+                {
+                    messageInput.id = id + choiceId;
+                    formGroup.id = formId + choiceId;
+                }   
+                formGroup.className = formId;
+                
+                formGroup.appendChild(messageInput);
+                
+                return formGroup;
+            }
+
             genericFormGroup.appendChild(genericHeader);
             genericFormGroup.appendChild(genericDialogue);
             genericFormGroup.appendChild(genericdButtonGroup);
             return genericFormGroup;            
         }
 
-        function dialogueForm(formId, id, className) {
-            var formGroup = document.createElement("div");
-            var messageInput = document.createElement("textarea");
-            messageInput.rows = 3;
-            messageInput.cols = 40;
-            messageInput.className = className;
-            if (formId == "normalFormName")
-            {
-                messageInput.id = id + normalId;
-                formGroup.id = formId + normalId;
-            }    
-            else if (formId == "repeatFormName")
-            {
-                messageInput.id = id + repeatId;
-                formGroup.id = formId + repeatId;
-            }   
-            else
-            {
-                messageInput.id = id + choiceId;
-                formGroup.id = formId + choiceId;
-            }   
-            formGroup.className = formId;
-            
-            formGroup.appendChild(messageInput);
-            
-            return formGroup;
-        }
+       
         formGroup.appendChild(messageHeader);
         formGroup.appendChild(messageContainer);
         formGroup.appendChild(toggleRepeat);
@@ -302,6 +311,10 @@ document.addEventListener("DOMContentLoaded", function () {
         return formGroup;
     }
 
+    // Add input field - Single line input (ie. Name)
+    // <param name="id">id of the input field</param>
+    // <param name="label">Text of the input field</param>input field
+    // <param name="className">className of the input field</param>
     function addInputField(id, label, className) {
         var formGroup = document.createElement("div");
         var nameLabel = document.createElement("label");
@@ -320,6 +333,10 @@ document.addEventListener("DOMContentLoaded", function () {
         return formGroup;
     }
 
+    // Add Drop down option
+    // <param name="id">id of the drop down</param>
+    // <param name="label">Text of the drop down</param>
+    // <param name="className">className of the drop down</param>
     function addTypeDropDown(id, label, className) {
         var formGroup = document.createElement("div");
         var typeLabel = document.createElement("label");
@@ -342,6 +359,10 @@ document.addEventListener("DOMContentLoaded", function () {
         return formGroup;
     }
 
+    // Add toggle button (ie. checkbox)
+    // <param name="id">id of the toggleButton</param>
+    // <param name="label">Text of the toggleButton</param>
+    // <param name="className">className of the toggleButton</param>
     function addToggle(id, label, className) {
         var formGroup = document.createElement("div");
         var toggleLabel = document.createElement("label");
@@ -356,50 +377,90 @@ document.addEventListener("DOMContentLoaded", function () {
         return formGroup;
     }
 
+    // Add the header
+    // <param name="label">Text of the Header</param>  
+    // <param name="size">size of the Header</param>  
     function addHeader(label, size) {
         var heading = document.createElement(size);
         heading.textContent = label;
         return heading;
     }
 
+    // Reference to the Generate Button
     var generateJSONButton = document.getElementById("generate-json");
     var generatedJson = document.getElementById("generated-json-text");
+    // Click event for generating the JSON
     generateJSONButton.addEventListener('click', function () {
+        // Gets a reference of all the Template Form
         interactables.querySelectorAll('.container').forEach(function (container, index) {
-            
+        // From the Template Form X
+            // For the idValue, nameValue, typeValue the class or id will do since it is unique per Template Form    
+
+            // Get the Id value
             var idValue = container.querySelector(".objectClass").value;
+            // Get the Name Value
             var nameValue = container.querySelector(".nameClass").value;
+            // Get the Type Value
             var typeValue = container.querySelector(".typeClass").value;
+
+            // For the rest, class is important since id doesn't carry the value itself
+            
+            // Initialize some array for the messages
             var normalMsg = new Array();
             var repeatMsg = new Array();
             var choiceOneMsg = new Array();
             var choiceTwoMsg = new Array();
+
+            // Loops through class: .normalFormName 
+            // item then loops through the .normalMsgClass which is the (user)input
+            // and stores them to the normalMsg
             container.querySelectorAll(".normalFormName").forEach(function (item, count) {
                 normalMsg[count] = item.querySelector(".normalMsgClass").value;
             });
+
+            // Loops through class: .repeatFormName 
+            // item then loops through the .repeatMsgClass which is the (user)input
+            // and stores them to the repeatMsg
             container.querySelectorAll(".repeatFormName").forEach(function (item, count) {
                 repeatMsg[count] = item.querySelector(".repeatMsgClass").value;
             });
+
+            // Loops through class: .choiceDialogueOneClass 
+            // Since the class is unique (soon to be change)
+            // choiceOneMsg is fine storing directly from it
             container.querySelectorAll(".choiceDialogueOneClass").forEach(function (item, count) {
                 choiceOneMsg[count] = item.value;
             });
+            // Both choiceOneValue and choiceTwoValue are similar with the first three
             var choiceOneValue = container.querySelector(".choiceOneInputClass").value;
             var choiceTwoValue = container.querySelector(".choiceTwoInputClass").value;
+
+            // Loops through class: .choiceDialogueTwoClass 
+            // Since the class is unique (soon to be change)
+            // choiceTwoMsg is fine storing directly from it
             container.querySelectorAll(".choiceDialogueTwoClass").forEach(function (item, count) {
                 choiceTwoMsg[count] = item.value;
             });
 
+            // Assign the values to the (JSON)Object
             interactable.interactable[index]["id"] = idValue;
             interactable.interactable[index]["name"] = nameValue;
             interactable.interactable[index]["type"] = typeValue;
+
+            // Create messageObject in order to make it more readable
             var messageObject = interactable.interactable[index]["message"] = {};
             messageObject["normal"] = normalMsg;
+
+            // Checks whether hasChoice or hasRepeat has been click
+            // and if it is then assign the value to it
             var checkToggle = container.querySelector(".toggleRepeatClass");
             if (checkToggle.checked) { 
                 messageObject["repeat"] = repeatMsg;
             }    
             
             checkToggle = container.querySelector(".toggleChoiceClass");
+            // F:NI:2 linkID needs to be more dynamic
+            // What I can do is make another input and let the user decide where it links with
             if (checkToggle.checked) { 
                 interactable.interactable[index]["choice"] = [
                 { "dialog": choiceOneValue, "linkID": 0 },
@@ -412,6 +473,7 @@ document.addEventListener("DOMContentLoaded", function () {
         generateJson();
     });
 
+    // Generate the JSON to the text Area
     function generateJson() {
         var stringified = JSON.stringify(interactable);
         generatedJson.textContent = stringified;
