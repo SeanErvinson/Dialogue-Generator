@@ -1,4 +1,32 @@
-document.addEventListener("DOMContentLoaded", function () {
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Dialogue</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb"
+        crossorigin="anonymous">
+</head>
+
+<body>
+    <div>
+        <form action="">
+            <div class="form-group">
+                <label for="title">Scene Number</label>
+                <input type="text" class="form-control" id="title">
+            </div>
+            <button type="button" id="add-interactable" class="btn btn-success">Add New Interactable</button>
+        </form>
+    </div>
+
+    <div id="interactables"></div>
+
+    <button class="btn btn-primary" id="generate-json">Generate JSON</button>
+    <textarea class= "form-control" id ="generated-json-text" rows="4" readonly ></textarea>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
     // Reference to the Add New Interactable Button
     var addInteractable = document.getElementById("add-interactable");
     // Reference to the Div
@@ -7,9 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var i = 0;
     
     // Json Object
-    var interactable = {
-        "interactable": []
-    };
+    var interactable = [];
 
     // Add button click event
     addInteractable.addEventListener('click', function () {
@@ -25,7 +51,7 @@ document.addEventListener("DOMContentLoaded", function () {
         linebreak.style.backgroundColor = "black";
 
         informationGroup.className = "informationGroup";
-        interactable.interactable.push({
+        interactable.push({
             "id": i,
             "type": "",
             "name": "",
@@ -132,8 +158,8 @@ document.addEventListener("DOMContentLoaded", function () {
         var toggleChoiceValue = toggleChoice.querySelector("#toggleChoice" + i);
         // Click event for toggle choice
         toggleChoiceValue.addEventListener("click", function () {
-            interactable.interactable[0]["choice"] = [{ "dialog": "", "linkID": 0 }, { "dialog": "", "linkID": 1 }];
-            interactable.interactable[0]["linkIdMessage"] = [{ "content": "" }, { "content": "" }];
+            // interactable[i-1]["choice"] = [{ "dialog": "", "linkID": 0 }, { "dialog": "", "linkID": 1 }];
+            // interactable[i-1]["linkIdMessage"] = [{ "content": "" }, { "content": "" }];
             choiceDialogueGroup.style.display = toggleChoiceValue.checked ? "block" : "none";
             choiceDialogueGroup.querySelectorAll(".choiceInputClass").forEach(function (item, index) {
                 item.value = "";
@@ -156,7 +182,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         var toggleRepeatValue = toggleRepeat.querySelector("#toggleRepeat" + i);
         toggleRepeatValue.addEventListener('click', function () {
-            interactable.interactable[0]["message"] = { ["normal"]: [""], ["repeat"]: [""] };
+            interactable[i-1]["message"] = { ["normal"]: [""], ["repeat"]: [""] };
             repeatDialogueGroup.style.display = toggleRepeatValue.checked ? "block" : "none"; 
             repeatDialogueGroup.querySelectorAll(".repeatFormName").forEach(function (item, index) {
                 item.querySelector("#repeatMsg" + index).value = "";
@@ -441,33 +467,38 @@ document.addEventListener("DOMContentLoaded", function () {
             container.querySelectorAll(".choiceDialogueTwoClass").forEach(function (item, count) {
                 choiceTwoMsg[count] = item.value;
             });
-
+            
             // Assign the values to the (JSON)Object
-            interactable.interactable[index]["id"] = idValue;
-            interactable.interactable[index]["name"] = nameValue;
-            interactable.interactable[index]["type"] = typeValue;
+            interactable[index]["id"] = idValue;
+            interactable[index]["name"] = nameValue;
+            interactable[index]["type"] = typeValue;
 
             // Create messageObject in order to make it more readable
-            var messageObject = interactable.interactable[index]["message"] = {};
+            var messageObject = interactable[index]["message"] = {};
             messageObject["normal"] = normalMsg;
 
+            var choiceToggle = container.querySelector(".toggleChoiceClass");
+            // F:NI:2 linkID needs to be more dynamic
+            // What I can do is make another input and let the user decide where it links with
+            if (choiceToggle.checked) { 
+                interactable[index]["choice"] = [
+                { "dialog": choiceOneValue, "linkID": 0 },
+                { "dialog": choiceTwoValue, "linkID": 1 }];
+                interactable[index]["linkIdMessage"] = [
+                    { "content": choiceOneMsg },
+                    { "content": choiceTwoMsg }];
+            }
+            else
+            {
+                delete interactable[index]["choice"];
+                delete interactable[index]["linkIdMessage"];
+            }    
+ 
             // Checks whether hasChoice or hasRepeat has been click
             // and if it is then assign the value to it
             var checkToggle = container.querySelector(".toggleRepeatClass");
             if (checkToggle.checked) { 
                 messageObject["repeat"] = repeatMsg;
-            }    
-            
-            checkToggle = container.querySelector(".toggleChoiceClass");
-            // F:NI:2 linkID needs to be more dynamic
-            // What I can do is make another input and let the user decide where it links with
-            if (checkToggle.checked) { 
-                interactable.interactable[index]["choice"] = [
-                { "dialog": choiceOneValue, "linkID": 0 },
-                { "dialog": choiceTwoValue, "linkID": 1 }];
-                interactable.interactable[index]["linkIdMessage"] = [
-                    { "content": choiceOneMsg },
-                    { "content": choiceTwoMsg }];
             }    
         });
         generateJson();
@@ -480,3 +511,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
+
+    </script>
+</body>
+
+</html>
