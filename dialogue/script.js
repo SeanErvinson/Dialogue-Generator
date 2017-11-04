@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var interactables = document.getElementById("interactables");
     // Number of Interactables
     var i = 0;
-    
+
     // Json Object
     var interactable = [];
 
@@ -47,7 +47,8 @@ document.addEventListener("DOMContentLoaded", function () {
             var nameGroup = addInputField("nameId", "Name", "nameClass");
             var type = addTypeDropDown("typeId", "Type", "typeClass");
             var removeInteractable = document.createElement('button');
-            removeInteractable.className = "col-sm-2 btn btn-danger";
+            removeInteractable.className = "btn btn-danger col";
+            removeInteractable.style.display = "inline-block";
             removeInteractable.textContent = "Remove Interactable";
             removeInteractable.addEventListener('click', function (event) {
                 event.preventDefault();
@@ -55,18 +56,17 @@ document.addEventListener("DOMContentLoaded", function () {
                 var element = this.parentElement.parentElement.parentElement;
                 interactables.removeChild(element);
                 updateId();
-                interactable.interactable.pop();
+                interactable.pop();
             });
-            
+
             nameGroup.className = "col-sm-0";
             type.className = "col";
-            idGroup.className = "col-sm-2";
+            idGroup.className = "col";
             topFormGroup.className = "row";
             botFormGroup.className = "row";
             masterFormGroup.className = "basicForm";
 
-                    
-            function updateId() { 
+            function updateId() {
                 interactables.querySelectorAll(".informationGroup").forEach(function (container, index) {
                     container.querySelector(".objectClass").value = index;
                 });
@@ -84,25 +84,24 @@ document.addEventListener("DOMContentLoaded", function () {
                 var formGroup = document.createElement("div");
                 var idLabel = document.createElement("label");
                 var idInput = document.createElement("input");
-        
-                formGroup.className = className + " row";
+
+                formGroup.className = className;
 
                 idInput.readOnly = true;
                 idInput.value = i;
                 idInput.id = id + i;
-                idInput.className = "objectClass col-sm-4";
+                idInput.className = "objectClass";
                 idInput.style.textAlign = "right";
-                
+
                 idLabel.textContent = label;
-                idLabel.className = "col-sm-2";
-                
+
                 formGroup.appendChild(idLabel);
                 formGroup.appendChild(idInput);
                 return formGroup;
             }
-        }      
+        }
     }
-    
+
     function messageForm(label, normId, repId) {
         var normalId = 0;
         var repeatId = 0;
@@ -122,7 +121,7 @@ document.addEventListener("DOMContentLoaded", function () {
         var toggleChoice = addToggle("toggleChoice", "Has Choice", "toggleChoiceClass");
         // Choice
         var choiceDialogueGroup = choiceDialogueGroup();
-        
+
         messageContainer.className = "row";
         messageContainer.appendChild(normalDialogueGroup);
         messageContainer.appendChild(repeatDialogueGroup);
@@ -130,8 +129,6 @@ document.addEventListener("DOMContentLoaded", function () {
         var toggleChoiceValue = toggleChoice.querySelector("#toggleChoice" + i);
         // Click event for toggle choice
         toggleChoiceValue.addEventListener("click", function () {
-            // interactable[i-1]["choice"] = [{ "dialog": "", "linkID": 0 }, { "dialog": "", "linkID": 1 }];
-            // interactable[i-1]["linkIdMessage"] = [{ "content": "" }, { "content": "" }];
             choiceDialogueGroup.style.display = toggleChoiceValue.checked ? "block" : "none";
             choiceDialogueGroup.querySelectorAll(".choiceInputClass").forEach(function (item, index) {
                 item.value = "";
@@ -143,32 +140,31 @@ document.addEventListener("DOMContentLoaded", function () {
                 item.value = "";
             });
         })
-        
+
         repeatDialogueGroup.style.display = "none";
         formGroup.className = "messageForm";
         normalDialogueGroup.className = "normalDialogueGroup";
         normalDialogueGroup.id = normId + i;
         repeatDialogueGroup.className = "repeatDialogueGroup";
         repeatDialogueGroup.id = repId + i;
-    
+
 
         var toggleRepeatValue = toggleRepeat.querySelector("#toggleRepeat" + i);
         toggleRepeatValue.addEventListener('click', function () {
-            interactable[i-1]["message"] = { ["normal"]: [""], ["repeat"]: [""] };
-            repeatDialogueGroup.style.display = toggleRepeatValue.checked ? "block" : "none"; 
+            repeatDialogueGroup.style.display = toggleRepeatValue.checked ? "block" : "none";
             repeatDialogueGroup.querySelectorAll(".repeatFormName").forEach(function (item, index) {
                 item.querySelector("#repeatMsg" + index).value = "";
             });
         });
 
-        function choiceDialogueGroup() { 
+        function choiceDialogueGroup() {
             var formGroup = document.createElement("div");
             var choiceHeader = addHeader("Choice", "h2");
             var choiceDialogueForm = choiceDialogueInput("choiceOneInputId", "Choice" + (choiceId + 1), "choiceOneInputClass", "choiceDialogue" + choiceId, "Choice" + (choiceId + 1), "choiceDialogueName", "choiceDialogue", "choiceDialogueButton", "choiceDialogueOneClass");
             formGroup.className = "choiceDialogueFormClass";
-            var choiceDialogueForm2 = choiceDialogueInput("choiceTwoInputId", "Choice" + (choiceId + 1), "choiceTwoInputClass", "choiceDialogue"+choiceId, "Choice" + (choiceId + 1), "choiceDialogueName", "choiceDialogue", "choiceDialogueButton", "choiceDialogueTwoClass");
+            var choiceDialogueForm2 = choiceDialogueInput("choiceTwoInputId", "Choice" + (choiceId + 1), "choiceTwoInputClass", "choiceDialogue" + choiceId, "Choice" + (choiceId + 1), "choiceDialogueName", "choiceDialogue", "choiceDialogueButton", "choiceDialogueTwoClass");
             function choiceDialogueInput(id, label, className, dialogueId, dialogueIdSubHeaderLabel, dialogueFormName, dialogueId, buttonGroupId, dialogueIdClassName) {
-                
+
                 var innerFormGroup = document.createElement("div");
                 var choiceInputField = addInputField(id, label, className);
                 var choiceDialogue = genericDialogueForm(dialogueId, dialogueIdSubHeaderLabel, dialogueFormName, dialogueId, buttonGroupId, dialogueIdClassName);
@@ -183,10 +179,10 @@ document.addEventListener("DOMContentLoaded", function () {
             formGroup.appendChild(choiceHeader);
             formGroup.appendChild(choiceDialogueForm);
             formGroup.appendChild(choiceDialogueForm2);
-            
+
             return formGroup;
         }
-        
+
         // Generic Dialogue Form
         // This contains
         // Header
@@ -198,18 +194,16 @@ document.addEventListener("DOMContentLoaded", function () {
             var genericDialogue = dialogueForm(dialogueFormName, dialogueId, className);
             var genericdButtonGroup = buttonForm(buttonGroupId, dialogueFormName, dialogueId, className);
             genericFormGroup.id = id + i;
-            if (id == "normalDialogueGroup")
-            {
+            if (id == "normalDialogueGroup") {
                 genericFormGroup.id = id + normalId;
-            }   
-            else if (id == "repeatDialogueGroup")
-            {
+            }
+            else if (id == "repeatDialogueGroup") {
                 genericFormGroup.id = id + repeatId;
-            }    
+            }
             else (id == "choiceDialogueGroup")
             {
                 genericFormGroup.id = id + choiceId;
-            }    
+            }
 
             function buttonForm(id, formId, dialogueId, className) {
                 var formGroup = document.createElement("div");
@@ -235,7 +229,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 removeButton.textContent = "Remove";
                 removeButton.className = "btn-danger";
                 removeButton.addEventListener("click", function () {
-                    if (repeatId != 0 || normalId != 0) { 
+                    if (repeatId != 0 || normalId != 0) {
                         if (id == "repeatdButtonGroup") {
                             var element = genericFormGroup.querySelector('#repeatFormName' + repeatId);
                             repeatId--;
@@ -246,20 +240,19 @@ document.addEventListener("DOMContentLoaded", function () {
                             normalId--;
                             genericFormGroup.removeChild(element);
                         }
-                    }    
+                    }
                     // Remove Choice needs a bit more work
                     if (choiceId != 0) {
-                        if (id == "choiceDialogueButton")
-                        {    
+                        if (id == "choiceDialogueButton") {
                             var element = genericFormGroup.querySelector('#choiceDialogueName' + choiceId);
                             choiceId--;
                             genericFormGroup.removeChild(element);
                         }
-                    }    
+                    }
                 })
                 addButton.style.display = "inline";
                 removeButton.style.display = "inline";
-    
+
                 formGroup.appendChild(addButton);
                 formGroup.appendChild(removeButton);
                 return formGroup;
@@ -271,41 +264,38 @@ document.addEventListener("DOMContentLoaded", function () {
                 messageInput.rows = 3;
                 messageInput.cols = 40;
                 messageInput.className = className;
-                if (formId == "normalFormName")
-                {
+                if (formId == "normalFormName") {
                     messageInput.id = id + normalId;
                     formGroup.id = formId + normalId;
-                }    
-                else if (formId == "repeatFormName")
-                {
+                }
+                else if (formId == "repeatFormName") {
                     messageInput.id = id + repeatId;
                     formGroup.id = formId + repeatId;
-                }   
-                else
-                {
+                }
+                else {
                     messageInput.id = id + choiceId;
                     formGroup.id = formId + choiceId;
-                }   
+                }
                 formGroup.className = formId;
-                
+
                 formGroup.appendChild(messageInput);
-                
+
                 return formGroup;
             }
 
             genericFormGroup.appendChild(genericHeader);
             genericFormGroup.appendChild(genericDialogue);
             genericFormGroup.appendChild(genericdButtonGroup);
-            return genericFormGroup;            
+            return genericFormGroup;
         }
 
-       
+
         formGroup.appendChild(messageHeader);
         formGroup.appendChild(messageContainer);
         formGroup.appendChild(toggleRepeat);
         formGroup.appendChild(toggleChoice);
         formGroup.appendChild(choiceDialogueGroup);
-        
+
         return formGroup;
     }
 
@@ -349,7 +339,6 @@ document.addEventListener("DOMContentLoaded", function () {
         typeInput.className = className;
         typeInput.id = id + i;
         typeLabel.textContent = label;
-        typeLabel.className = "col-sm-2"
         formGroup.className = "row mb-0";
 
         formGroup.appendChild(typeLabel);
@@ -391,7 +380,7 @@ document.addEventListener("DOMContentLoaded", function () {
     generateJSONButton.addEventListener('click', function () {
         // Gets a reference of all the Template Form
         interactables.querySelectorAll('.container').forEach(function (container, index) {
-        // From the Template Form X
+            // From the Template Form X
             // For the idValue, nameValue, typeValue the class or id will do since it is unique per Template Form    
 
             // Get the Id value
@@ -402,7 +391,7 @@ document.addEventListener("DOMContentLoaded", function () {
             var typeValue = container.querySelector(".typeClass").value;
 
             // For the rest, class is important since id doesn't carry the value itself
-            
+
             // Initialize some array for the messages
             var normalMsg = new Array();
             var repeatMsg = new Array();
@@ -439,7 +428,7 @@ document.addEventListener("DOMContentLoaded", function () {
             container.querySelectorAll(".choiceDialogueTwoClass").forEach(function (item, count) {
                 choiceTwoMsg[count] = item.value;
             });
-            
+
             // Assign the values to the (JSON)Object
             interactable[index]["id"] = idValue;
             interactable[index]["name"] = nameValue;
@@ -452,26 +441,25 @@ document.addEventListener("DOMContentLoaded", function () {
             var choiceToggle = container.querySelector(".toggleChoiceClass");
             // F:NI:2 linkID needs to be more dynamic
             // What I can do is make another input and let the user decide where it links with
-            if (choiceToggle.checked) { 
+            if (choiceToggle.checked) {
                 interactable[index]["choice"] = [
-                { "dialog": choiceOneValue, "linkID": 0 },
-                { "dialog": choiceTwoValue, "linkID": 1 }];
+                    { "dialog": choiceOneValue, "linkId": 0 },
+                    { "dialog": choiceTwoValue, "linkId": 1 }];
                 interactable[index]["linkIdMessage"] = [
                     { "content": choiceOneMsg },
                     { "content": choiceTwoMsg }];
             }
-            else
-            {
+            else {
                 delete interactable[index]["choice"];
                 delete interactable[index]["linkIdMessage"];
-            }    
- 
+            }
+
             // Checks whether hasChoice or hasRepeat has been click
             // and if it is then assign the value to it
             var checkToggle = container.querySelector(".toggleRepeatClass");
-            if (checkToggle.checked) { 
+            if (checkToggle.checked) {
                 messageObject["repeat"] = repeatMsg;
-            }    
+            }
         });
         generateJson();
     });
