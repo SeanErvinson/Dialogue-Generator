@@ -388,7 +388,8 @@ document.addEventListener("DOMContentLoaded", function () {
             // For the idValue, nameValue, typeValue the class or id will do since it is unique per Template Form    
 
             // Get the Id value
-            var idValue = container.querySelector(".objectClass").value;
+            //var idValue = container.querySelector(".objectClass").value;
+            var idValue = index;
             // Get the Name Value
             var nameValue = container.querySelector(".nameClass").value;
             // Get the Type Value
