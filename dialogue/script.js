@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function () {
             var masterFormGroup = document.createElement("form");
             var topFormGroup = document.createElement("form");
             var botFormGroup = document.createElement("form");
-            var idGroup = addId("objectId", "ID", "objectClass");
+            //var idGroup = addId("objectId", "ID", "objectClass");
             var nameGroup = addInputField("nameId", "Name", "nameClass");
             var type = addTypeDropDown("typeId", "Type", "typeClass");
             var removeInteractable = document.createElement('button');
@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             nameGroup.className = "col-sm-0";
             type.className = "col";
-            idGroup.className = "col";
+            //idGroup.className = "col";
             topFormGroup.className = "row";
             botFormGroup.className = "row";
             masterFormGroup.className = "basicForm";
@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
             }
 
-            topFormGroup.appendChild(idGroup);
+            //topFormGroup.appendChild(idGroup);
             topFormGroup.appendChild(removeInteractable);
             botFormGroup.appendChild(nameGroup);
             botFormGroup.appendChild(type);
@@ -229,18 +229,22 @@ document.addEventListener("DOMContentLoaded", function () {
                 removeButton.textContent = "Remove";
                 removeButton.className = "btn-danger";
                 removeButton.addEventListener("click", function () {
-                    if (repeatId != 0 || normalId != 0) {
+                    if (repeatId != 0) {
                         if (id == "repeatdButtonGroup") {
                             var element = genericFormGroup.querySelector('#repeatFormName' + repeatId);
                             repeatId--;
                             genericFormGroup.removeChild(element);
                         }
-                        else if (id == "normalButtonGroup") {
+
+                    }
+                    if (normalId != 0)
+                    {
+                        if (id == "normalButtonGroup") {
                             var element = genericFormGroup.querySelector('#normalFormName' + normalId);
                             normalId--;
                             genericFormGroup.removeChild(element);
                         }
-                    }
+                    }    
                     // Remove Choice needs a bit more work
                     if (choiceId != 0) {
                         if (id == "choiceDialogueButton") {
@@ -384,7 +388,8 @@ document.addEventListener("DOMContentLoaded", function () {
             // For the idValue, nameValue, typeValue the class or id will do since it is unique per Template Form    
 
             // Get the Id value
-            var idValue = container.querySelector(".objectClass").value;
+            //var idValue = container.querySelector(".objectClass").value;
+            var idValue = index;
             // Get the Name Value
             var nameValue = container.querySelector(".nameClass").value;
             // Get the Type Value
