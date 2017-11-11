@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function () {
             var masterFormGroup = document.createElement("form");
             var topFormGroup = document.createElement("form");
             var botFormGroup = document.createElement("form");
-            //var idGroup = addId("objectId", "ID", "objectClass");
+            var idGroup = addId("objectId", "ID", "objectClass");
             var nameGroup = addInputField("nameId", "Name", "nameClass");
             var type = addTypeDropDown("typeId", "Type", "typeClass");
             var removeInteractable = document.createElement('button');
@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             nameGroup.className = "col-sm-0";
             type.className = "col";
-            //idGroup.className = "col";
+            idGroup.className = "col";
             topFormGroup.className = "row";
             botFormGroup.className = "row";
             masterFormGroup.className = "basicForm";
@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
             }
 
-            //topFormGroup.appendChild(idGroup);
+            topFormGroup.appendChild(idGroup);
             topFormGroup.appendChild(removeInteractable);
             botFormGroup.appendChild(nameGroup);
             botFormGroup.appendChild(type);
