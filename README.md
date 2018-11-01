@@ -35,7 +35,7 @@ Version 0.1.0.alpha1
 
 ## Authors
 
-* **Sean Ervinson Ong** - [ASean___](https://gitlab.com/ASean___)
+* **Sean Ervinson Ong** - [SeanErvinson](https://https://github.com/SeanErvinson/)
 
 ## Acknowledgments
 
